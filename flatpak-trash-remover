@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# List contents of ~/.var/app/
+files=$(ls -1 ~/.var/app/)
+
+# Loop through each element of the folder
+for file in $files; do
+    # Set the name as a variable
+    app_name="${file##*/}"
+
+    # Check if a flatpak app of that name is installed
+    if ! flatpak list 2> /dev/null | grep -qw $app_name; then
+        # Ask the user to delete the folder
+        read -p "The app $app_name is not installed. Do you want to delete its folder? (y/n): " choice
+        case "$choice" in
+            [Yy]* )
+                # Remove the folder recursively
+                rm -rf ~/.var/app/$file;;
+            [Nn]* )
+                echo "Skipping deletion of $app_name folder.";;
+            * )
+                echo "Invalid input. Skipping deletion of $app_name folder.";;
+        esac
+    fi
+done
+
+echo "All Apps checked."
