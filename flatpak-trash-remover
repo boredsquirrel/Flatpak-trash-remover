@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo 
+echo =======================================================
+echo "              Flatpak Trash Remover"
+echo
+echo "Cleanup leftover folders of uninstalled Flatpak Apps."
+echo =======================================================
+echo
+
 # List contents of ~/.var/app/
 files=$(ls -1 ~/.var/app/)
 
@@ -8,20 +16,26 @@ for file in $files; do
     # Set the name as a variable
     app_name="${file##*/}"
 
-    # Check if a flatpak app of that name is installed
+    # check if the name is not in flatpak list (app is not installed)
     if ! flatpak list 2> /dev/null | grep -qw $app_name; then
-        # Ask the user to delete the folder
-        read -p "The app $app_name is not installed. Do you want to delete its folder? (y/n): " choice
-        case "$choice" in
-            [Yy]* )
-                # Remove the folder recursively
-                rm -rf ~/.var/app/$file;;
-            [Nn]* )
-                echo "Skipping deletion of $app_name folder.";;
-            * )
-                echo "Invalid input. Skipping deletion of $app_name folder.";;
-        esac
+        # repeat until done
+        while true; do
+            # Ask the user to delete the folder
+            read -p "The app $app_name is not installed. Do you want to delete its folder? (Y/n): " choice
+            case "$choice" in
+                [Yy]* )
+                    # Remove the folder recursively
+                    rm -rf ~/.var/app/$file
+                    break;;
+                [Nn]* )
+                    echo "Skipping deletion of $app_name folder."
+                    break;;
+                * )
+                    echo "Invalid input.";;
+            esac
+        done
     fi
 done
 
 echo "All Apps checked."
+echo
