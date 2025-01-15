@@ -6,7 +6,7 @@ This tool searches for appdata folders where there is no matching app, and promp
 Install:
 
 ```
-curl https://github.com/trytomakeyouprivate/Flatpak-trash-remover/raw/main/flatpak-trash-remover -o ./flatpak-trash-remover
+curl https://github.com/boredsquirrel/Flatpak-trash-remover/raw/main/flatpak-trash-remover -o ./flatpak-trash-remover
 run0 sh -c '
   mkdir /var/usrlocal/bin || mkdir /usr/local/bin 
   mv ./flatpak-trash-remover /var/usrlocal/bin
