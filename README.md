@@ -6,7 +6,13 @@ This tool searches for appdata folders where there is no matching app, and promp
 Usage:
 
 ```
-wget https://github.com/trytomakeyouprivate/Flatpak-trash-remover/raw/main/flatpak-trash-remover -P ~/.local/bin
-chmod +x ~/.local/bin/flatpak-trash-remover
+curl https://github.com/trytomakeyouprivate/Flatpak-trash-remover/raw/main/flatpak-trash-remover -o ./flatpak-trash-remover
+run0 sh -c '
+  mkdir /var/usrlocal/bin || mkdir /usr/local/bin 
+  mv ./flatpak-trash-remover /var/usrlocal/bin
+  chown -R root:root /var/usrlocal/bin
+  chcon -R system_u:object_r:bin_t:s0 /var/usrlocal/bin #on SELinux systems
+  chmod +x /usr/local/bin/flatpak-trash-remover
+'
 flatpak-trash-remover
 ```
